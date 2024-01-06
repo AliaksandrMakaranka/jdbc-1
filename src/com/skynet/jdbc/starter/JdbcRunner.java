@@ -12,9 +12,10 @@ public class JdbcRunner {
     public static void main(String[] args) throws SQLException {
         Class<Driver> driverClass = Driver.class;
         String sql = """
-                CREATE TABLE IF NOT EXISTS info(
-                id SERIAL PRIMARY KEY,
-                data TEXT NOT NULL);
+                UPDATE info
+                SET data = 'TestTest'
+                WHERE id = 5
+                RETURNING *;
                 """;
 
         try (Connection connection = ConnectionManager.open();
@@ -23,6 +24,7 @@ public class JdbcRunner {
             System.out.println(connection.getTransactionIsolation());
             boolean executeResult = statement.execute(sql);
             System.out.println(executeResult);
+            System.out.println(statement.getUpdateCount());
         }
     public static void main(String[] args) {
         
