@@ -14,5 +14,7 @@ public class JdbcRunner {
         try (Connection connection = ConnectionManager.open()) {
             System.out.println(connection.getTransactionIsolation());
         }
+    public static void main(String[] args) {
+        
     }
 }
