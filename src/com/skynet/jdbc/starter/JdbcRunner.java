@@ -28,6 +28,9 @@ public class JdbcRunner {
 
         try (Connection connection = ConnectionManager.open();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setFetchSize(50);
+            preparedStatement.setQueryTimeout(10);
+            preparedStatement.setMaxRows(100);
             System.out.println(preparedStatement);
 
             preparedStatement.setTimestamp(1, Timestamp.valueOf(start));
