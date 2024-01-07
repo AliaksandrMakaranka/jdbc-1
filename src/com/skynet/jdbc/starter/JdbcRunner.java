@@ -14,8 +14,27 @@ public class JdbcRunner {
 //        Long flightId = 2L;
 //        List<Long> result = getTicketByFlyId(flightId);
 //        System.out.println(result);
-        List<Long> result = getFlightBetween(LocalDate.of(2020, 1, 1).atStartOfDay(), LocalDateTime.now());
-        System.out.println(result);
+//        List<Long> result = getFlightBetween(LocalDate.of(2020, 1, 1).atStartOfDay(), LocalDateTime.now());
+//        System.out.println(result);
+        checkMetaData();
+    }
+
+    private static void checkMetaData() throws SQLException {
+        try (Connection connection = ConnectionManager.open()) {
+            DatabaseMetaData metaData = connection.getMetaData();
+            ResultSet catalogs = metaData.getCatalogs();
+
+            while (catalogs.next()) {
+                System.out.println(catalogs.getString(1));
+
+                ResultSet schemas = metaData.getSchemas();
+                while (schemas.next()) {
+                    System.out.println(schemas.getString("TABLE_SCHEM"));
+
+                }
+
+            }
+        }
     }
 
     private static List<Long> getFlightBetween(LocalDateTime start, LocalDateTime end) throws SQLException {
