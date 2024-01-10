@@ -3,7 +3,6 @@ package com.skynet.jdbc.starter;
 import com.skynet.jdbc.starter.util.ConnectionManager;
 
 import java.sql.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,11 +15,15 @@ public class JdbcRunner {
 //        System.out.println(result);
 //        List<Long> result = getFlightBetween(LocalDate.of(2020, 1, 1).atStartOfDay(), LocalDateTime.now());
 //        System.out.println(result);
-        checkMetaData();
+        try {
+            checkMetaData();
+        } finally {
+            ConnectionManager.closePool();
+        }
     }
 
     private static void checkMetaData() throws SQLException {
-        try (Connection connection = ConnectionManager.open()) {
+        try (Connection connection = ConnectionManager.get()) {
             DatabaseMetaData metaData = connection.getMetaData();
             ResultSet catalogs = metaData.getCatalogs();
 
@@ -30,9 +33,7 @@ public class JdbcRunner {
                 ResultSet schemas = metaData.getSchemas();
                 while (schemas.next()) {
                     System.out.println(schemas.getString("TABLE_SCHEM"));
-
                 }
-
             }
         }
     }
@@ -45,7 +46,7 @@ public class JdbcRunner {
                 """;
         List<Long> result = new ArrayList<>();
 
-        try (Connection connection = ConnectionManager.open();
+        try (Connection connection = ConnectionManager.get();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setFetchSize(50);
             preparedStatement.setQueryTimeout(10);
@@ -76,7 +77,7 @@ public class JdbcRunner {
 
         List<Long> result = new ArrayList<>();
 
-        try (Connection connection = ConnectionManager.open();
+        try (Connection connection = ConnectionManager.get();
              PreparedStatement prepareStatement = connection.prepareStatement(sql)) {
             prepareStatement.setLong(1, flightId);
 
