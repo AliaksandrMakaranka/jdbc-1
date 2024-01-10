@@ -16,7 +16,7 @@ public class TransactionRunner {
         Statement statement = null;
         Connection connection = null;
         try {
-            connection = ConnectionManager.open();
+            connection = ConnectionManager.get();
             connection.setAutoCommit(false);
 
             statement = connection.createStatement();
