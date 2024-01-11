@@ -1,6 +1,7 @@
 package com.skynet.jdbc.starter;
 
 import com.skynet.jdbc.starter.dao.TicketDao;
+import com.skynet.jdbc.starter.dto.TicketFilter;
 import com.skynet.jdbc.starter.entity.Ticket;
 
 import java.math.BigDecimal;
@@ -8,7 +9,9 @@ import java.util.Optional;
 
 public class DaoRunner {
     public static void main(String[] args) {
-        var tickets = TicketDao.getInstance().findAll();
+        TicketFilter ticketFilter = new TicketFilter(3, 0, "Евгений Кудрявцев", "A1");
+
+        var tickets = TicketDao.getInstance().findAll(ticketFilter);
 
         System.out.println(tickets);
     }
