@@ -9,10 +9,13 @@ import java.util.Optional;
 
 public class DaoRunner {
     public static void main(String[] args) {
+        Optional<Ticket> ticket = TicketDao.getInstance().findById(5L);
+        System.out.println(ticket);
+    }
+
+    private static void filterTest() {
         TicketFilter ticketFilter = new TicketFilter(3, 0, "Евгений Кудрявцев", "A1");
-
         var tickets = TicketDao.getInstance().findAll(ticketFilter);
-
         System.out.println(tickets);
     }
 
@@ -32,7 +35,7 @@ public class DaoRunner {
         Ticket ticket = new Ticket();
         ticket.setPassengerNo("1234567");
         ticket.setPassengerName("test");
-        ticket.setFlightId(3L);
+//        ticket.setFlight(3L);
         ticket.setSeatNo("B3");
         ticket.setCost(BigDecimal.TEN);
         Ticket saveTicket = ticketDao.save(ticket);
